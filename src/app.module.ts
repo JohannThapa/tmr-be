@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { FilesModule } from './files/files.module';
 import { AuthModule } from './auth/auth.module';
@@ -27,6 +27,13 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { AllConfigType } from './config/config.type';
 import { SessionModule } from './session/session.module';
 import { MailerModule } from './mailer/mailer.module';
+import { SupabaseConfigService } from './database/supabase-config.service';
+import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { CommonModule, ExceptionsFilter } from './common';
+import { DebugModule } from './debug';
+import { BaseModule } from './base';
+import { LoggerModule } from 'nestjs-pino';
+import { loggerOptions } from './database';
 
 const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
   useClass: TypeOrmConfigService,
@@ -37,6 +44,7 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
 
 @Module({
   imports: [
+    LoggerModule.forRoot(loggerOptions),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [
@@ -76,6 +84,9 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
+    CommonModule, // Global
+    BaseModule,
+    DebugModule,
     UsersModule,
     FilesModule,
     AuthModule,
@@ -87,6 +98,21 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
     MailModule,
     MailerModule,
     HomeModule,
+  ],
+  providers: [
+    SupabaseConfigService,
+    // Global Guard, Authentication check on all routers
+    // { provide: APP_GUARD, useClass: AuthenticatedGuard },
+    // Global Filter, Exception check
+    { provide: APP_FILTER, useClass: ExceptionsFilter },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        // disableErrorMessages: true,
+        transform: true,
+        whitelist: true,
+      }),
+    },
   ],
 })
 export class AppModule {}

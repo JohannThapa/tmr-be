@@ -4,7 +4,7 @@
 
 Demo: <https://demo.com>
 
-Frontend (React, Next.js): <https://github.com/JohannThapa/tmr>
+Frontend (Angular 18): <https://github.com/JohannThapa/tmr>
 
 ## Features
 

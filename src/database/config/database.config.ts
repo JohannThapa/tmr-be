@@ -70,6 +70,14 @@ class EnvironmentVariablesValidator {
   @IsString()
   @IsOptional()
   DATABASE_CERT: string;
+
+  @ValidateIf((envValues) => !envValues.SUPABASE_URL)
+  @IsString()
+  SUPABASE_URL: string;
+
+  @IsString()
+  @IsOptional()
+  SUPABASE_KEY: string;
 }
 
 export default registerAs<DatabaseConfig>('database', () => {
@@ -95,5 +103,7 @@ export default registerAs<DatabaseConfig>('database', () => {
     ca: process.env.DATABASE_CA,
     key: process.env.DATABASE_KEY,
     cert: process.env.DATABASE_CERT,
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseKey: process.env.SUPABASE_KEY,
   };
 });
