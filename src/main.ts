@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import {
   ClassSerializerInterceptor,
-  INestApplication,
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
@@ -23,7 +22,7 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   const supabaseConfig = app.get(SupabaseConfigService);
   const configService = app.get(ConfigService<AllConfigType>);
-  
+
   app.enableCors();
   app.useLogger(app.get(Logger));
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
