@@ -4,8 +4,7 @@ export class ClassRef {
   [index: string]: Type;
 }
 
-// export type Func = Function;
-export type Func<T = unknown, R = unknown> = (arg: T) => R;
+export type Func = Function;
 
 export type Metatype = Type | Func;
 

@@ -1,23 +1,20 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { FilesModule } from './files/files.module';
-import { AuthModule } from './auth/auth.module';
 import databaseConfig from './database/config/database.config';
-import authConfig from './auth/config/auth.config';
+import authConfig from './modules/authentications/auth/config/auth.config';
 import appConfig from './config/app.config';
 import mailConfig from './mail/config/mail.config';
 import fileConfig from './files/config/file.config';
-import facebookConfig from './auth-facebook/config/facebook.config';
-import googleConfig from './auth-google/config/google.config';
-import twitterConfig from './auth-twitter/config/twitter.config';
-import appleConfig from './auth-apple/config/apple.config';
+import facebookConfig from './modules/authentications/auth-facebook/config/facebook.config';
+import googleConfig from './modules/authentications/auth-google/config/google.config';
+import twitterConfig from './modules/authentications/auth-twitter/config/twitter.config';
+import appleConfig from './modules/authentications/auth-apple/config/apple.config';
 import path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthAppleModule } from './auth-apple/auth-apple.module';
-import { AuthFacebookModule } from './auth-facebook/auth-facebook.module';
-import { AuthGoogleModule } from './auth-google/auth-google.module';
-import { AuthTwitterModule } from './auth-twitter/auth-twitter.module';
+import { AuthAppleModule } from './modules/authentications/auth-apple/auth-apple.module';
+import { AuthTwitterModule } from './modules/authentications/auth-twitter/auth-twitter.module';
 import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 import { HeaderResolver } from 'nestjs-i18n';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
@@ -34,6 +31,7 @@ import { DebugModule } from './debug';
 import { BaseModule } from './base';
 import { LoggerModule } from 'nestjs-pino';
 import { loggerOptions } from './database';
+import { AuthFacebookModule, AuthGoogleModule, AuthModule } from './modules/authentications';
 
 const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
   useClass: TypeOrmConfigService,

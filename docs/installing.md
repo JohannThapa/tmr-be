@@ -71,11 +71,10 @@ With TypeORM it uses [PostgreSQL](https://www.postgresql.org/) as the main datab
 
 If you want quick run your app, you can use following commands:
 
-1. Go to folder, and copy `env-example` as `.env`.
+1. Go to folder, and copy `.env.example` as `.env`.
 
    ```bash
-   cd my-app/
-   cp env-example .env
+   cp .env.example .env
    ```
 
 2. Run containers

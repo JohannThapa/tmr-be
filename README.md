@@ -18,7 +18,7 @@ Demo: <https:///docs>
 
 ## Features
 
-- [x] Database. Support [TypeORM](https://www.npmjs.com/package/typeorm) and [Mongoose](https://www.npmjs.com/package/mongoose).
+- [x] Database. Support [TypeORM](https://www.npmjs.com/package/typeorm) and [PostgreSQL](https://www.npmjs.com/package/pg) with Realtime capabilities powered by [Supabase](https://supabase.com/).
 - [x] Seeding.
 - [x] Config Service ([@nestjs/config](https://www.npmjs.com/package/@nestjs/config)).
 - [x] Mailing ([nodemailer](https://www.npmjs.com/package/nodemailer)).
