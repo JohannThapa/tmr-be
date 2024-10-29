@@ -8,7 +8,7 @@ import { OAuth2Client } from 'google-auth-library';
 
 import { AuthGoogleLoginDto } from '../dto/auth-google-login.dto';
 import { AllConfigType } from '../../../../config';
-import { SocialInterface } from '../../../../social/interfaces';
+import { SocialInterface } from '../../../social/interfaces';
 
 @Injectable()
 export class AuthGoogleService {

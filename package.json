@@ -58,6 +58,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "compression": "^1.7.4",
+    "diskusage": "^1.2.0",
     "dotenv": "16.4.5",
     "express-session": "^1.18.1",
     "fb": "2.0.0",

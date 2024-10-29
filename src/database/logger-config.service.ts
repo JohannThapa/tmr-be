@@ -8,27 +8,26 @@ async function getNanoId() {
   const { nanoid } = await import('nanoid');
   return nanoid();
 }
+
 export const loggerOptions: Params = {
-  pinoHttp: [
-    {
-      quietReqLogger: true,
-      genReqId: async (req): Promise<ReqId> =>
-        (<Request>req).header('X-Request-Id') ?? (await getNanoId()),
-      ...(process.env['NODE_ENV'] === 'production'
-        ? {}
-        : {
-            level: 'debug',
-            transport: {
-              target: 'pino-pretty',
-              options: { sync: true, singleLine: true },
-            },
-          }),
-      autoLogging: {
-        ignore: (req) => passUrl.has((<Request>req).originalUrl),
-      },
-      customProps: (req) => (req as Request)?.customProps || {},
+  pinoHttp: {
+    quietReqLogger: true,
+    genReqId: async (req): Promise<ReqId> =>
+      (<Request>req).header('X-Request-Id') ?? (await getNanoId()),
+    ...(process.env['NODE_ENV'] === 'production'
+      ? {}
+      : {
+          level: 'debug',
+          transport: {
+            target: 'pino-pretty',
+            options: { sync: true, singleLine: true },
+          },
+        }),
+    autoLogging: {
+      ignore: (req) => passUrl.has((<Request>req).originalUrl),
     },
-    multistream(
+    customProps: (req) => (req as Request)?.customProps || {},
+    stream: multistream(
       [
         { level: 'debug', stream: process.stdout },
         { level: 'error', stream: process.stderr },
@@ -36,5 +35,5 @@ export const loggerOptions: Params = {
       ],
       { dedupe: true },
     ),
-  ],
+  },
 };

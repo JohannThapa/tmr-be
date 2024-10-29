@@ -1,11 +1,8 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { FilesModule } from './files/files.module';
 import databaseConfig from './database/config/database.config';
 import authConfig from './modules/authentications/auth/config/auth.config';
 import appConfig from './config/app.config';
 import mailConfig from './mail/config/mail.config';
-import fileConfig from './files/config/file.config';
 import facebookConfig from './modules/authentications/auth-facebook/config/facebook.config';
 import googleConfig from './modules/authentications/auth-google/config/google.config';
 import twitterConfig from './modules/authentications/auth-twitter/config/twitter.config';
@@ -22,16 +19,22 @@ import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { AllConfigType } from './config/config.type';
-import { SessionModule } from './session/session.module';
+import { SessionModule } from './modules/session/session.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SupabaseConfigService } from './database/supabase-config.service';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
-import { CommonModule, ExceptionsFilter } from './common';
-import { DebugModule } from './debug';
-import { BaseModule } from './base';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { DebugModule } from './modules/debug';
 import { LoggerModule } from 'nestjs-pino';
 import { loggerOptions } from './database';
-import { AuthFacebookModule, AuthGoogleModule, AuthModule } from './modules/authentications';
+import {
+  AuthFacebookModule,
+  AuthGoogleModule,
+  AuthModule,
+} from './modules/authentications';
+import { BaseModule, ExceptionsFilter } from './modules/base';
+import fileConfig from './modules/files/config/file.config';
+import { FilesModule } from './modules/files';
+import { IpInterceptor } from './utils';
 
 const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
   useClass: TypeOrmConfigService,
@@ -82,10 +85,9 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
-    CommonModule, // Global
     BaseModule,
     DebugModule,
-    UsersModule,
+    // UsersModule,
     FilesModule,
     AuthModule,
     AuthFacebookModule,
@@ -110,6 +112,10 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
         transform: true,
         whitelist: true,
       }),
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: IpInterceptor, // Register IpInterceptor as a global interceptor
     },
   ],
 })

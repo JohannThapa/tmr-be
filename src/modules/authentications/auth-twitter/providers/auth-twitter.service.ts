@@ -4,7 +4,7 @@ import Twitter from 'twitter';
 
 import { AllConfigType } from '../../../../config';
 import { AuthTwitterLoginDto } from '../dto';
-import { SocialInterface } from '../../../../social/interfaces';
+import { SocialInterface } from '../../../social/interfaces';
 
 @Injectable()
 export class AuthTwitterService {

@@ -16,12 +16,17 @@ import { ResolvePromisesInterceptor } from './utils/serializer.interceptor';
 import { SupabaseConfigService } from './database/supabase-config.service';
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 import { middleware } from './app.middleware';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: true,
+    cors: true,
+  });
+  // const app = await NestFactory.create(AppModule, { cors: true });
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  const supabaseConfig = app.get(SupabaseConfigService);
   const configService = app.get(ConfigService<AllConfigType>);
+  const supabaseConfig = app.get(SupabaseConfigService);
 
   app.enableCors();
   app.useLogger(app.get(Logger));
@@ -46,6 +51,8 @@ async function bootstrap() {
     // https://github.com/typestack/class-transformer/issues/549
     new ResolvePromisesInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
+    // new IpInterceptor(),
+    // new IpInterceptor(configService),
   );
 
   const options = new DocumentBuilder()

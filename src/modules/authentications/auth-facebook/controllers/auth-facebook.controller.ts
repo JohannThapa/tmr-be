@@ -10,7 +10,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthFacebookService } from '../providers/auth-facebook.service';
 import { AuthFacebookLoginDto } from '../dto/auth-facebook-login.dto';
 import { AuthService } from '../../auth/providers';
-import { LoginResponseDto } from '../../auth/dto';;
+import { LoginResponseDto } from '../../auth/dto';
 
 @ApiTags('Auth')
 @Controller({

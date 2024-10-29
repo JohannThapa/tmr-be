@@ -22,8 +22,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthRegisterLoginDto } from '../dto/auth-register-login.dto';
 import { LoginResponseDto } from '../dto/login-response.dto';
 import { NullableType } from '../../../../utils/types/nullable.type';
-import { User } from '../../../../users/domain/user';
 import { RefreshResponseDto } from '../dto/refresh-response.dto';
+import { User } from '../../../users/domain/user';
 
 @ApiTags('Auth')
 @Controller({
